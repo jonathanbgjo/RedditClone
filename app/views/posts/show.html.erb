@@ -1,0 +1,36 @@
+<h1><%= @post.title %></h1> OP: <%= current_user.username %>
+<br>
+URL: <%= @post.url %>
+<br>
+Content: <%= @post.content %>
+<br>
+
+Subs:
+<ul>
+    <% @post.subs.each do |sub| %> 
+        <li><a href="<%= sub_url(sub) %>"><%= sub.title %></a></li>
+    <% end %>
+</ul>
+
+
+Comments: 
+
+
+<% @post.comments.each do |comment| %>
+        <br>
+
+    <% if comment.parent_comment_id.nil? %>
+        <%=  comment.id %> <a href="<%= comment_url(comment) %>"> <%= comment.content %></a>  by <%= User.find_by(id: comment.author_id).username %>
+        <br>
+    <% else %>
+        <%= comment.content %> by <%= User.find_by(id: comment.author_id).username %>
+        <p>Parent comment: <%= Comment.find_by(id: comment.parent_comment_id).content %></p>
+    <% end %>     
+<% end %>
+
+
+
+
+<br><br>
+
+<a href="<%= new_post_comment_url(@post) %>">Add Comment</a>
